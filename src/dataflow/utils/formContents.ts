@@ -56,7 +56,6 @@ export const formContents: <Keys extends string>(input: {
             return;
           }
           setSelf(obj as Record<string, string>);
-          console.log(obj);
           const inputHandler = (e: Event) => {
             const target = e.target;
             if (!(target instanceof HTMLInputElement)) {
