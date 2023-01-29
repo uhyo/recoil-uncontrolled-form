@@ -1,25 +1,25 @@
 import { selector } from "recoil";
 import { pokemonListState } from "./pokemonList";
-import { formContents } from "./utils/formContents";
+import { recoilForm } from "./recoil-form/createForm";
+import { formData } from "./recoil-form/formData";
 
 export type ValidationState = {
   pokemonNameIsValid: boolean;
   canSubmit: boolean;
 };
 
-export const pokemonForm = formContents({
-  formId: "pokemon-form",
-  elementNames: ["name"],
+export const pokemonForm = recoilForm({
+  elements: ["name"],
 });
 
 export const validationState = selector<ValidationState>({
   key: "dataflow/validation",
   get({ get }) {
-    const formData = get(pokemonForm);
+    const formContents = get(formData(pokemonForm));
     const pokemonList = get(pokemonListState);
 
     const pokemonNameIsValid = pokemonList.some(
-      (p) => p.name === formData.name
+      (p) => p.name === formContents.name
     );
     const canSubmit = pokemonNameIsValid;
 

@@ -1,7 +1,8 @@
 import { FC, Suspense } from "react";
 import { useRecoilCallback, useRecoilValue } from "recoil";
 import { pokemonListState } from "../../dataflow/pokemonList";
-import { pokemonForm } from "../../dataflow/validation";
+import { formData } from "../../dataflow/recoil-form/formData";
+import { pokemonForm } from "../../dataflow/pokemonForm";
 import { PokemonNameValidationStatus } from "../PokemonNameValidationStatus";
 import { SubmitButton } from "../SubmitButton";
 
@@ -9,7 +10,7 @@ export const PokemonForm: FC = () => {
   const submitHandler = useRecoilCallback(
     ({ snapshot }) =>
       (e: React.SyntheticEvent<HTMLFormElement>) => {
-        snapshot.getPromise(pokemonForm).then((contents) => {
+        snapshot.getPromise(formData(pokemonForm)).then((contents) => {
           alert(contents.name);
         });
         e.preventDefault();
@@ -19,12 +20,14 @@ export const PokemonForm: FC = () => {
 
   const pokemonList = useRecoilValue(pokemonListState);
 
+  const { Form, Input } = useRecoilValue(pokemonForm);
+
   return (
-    <form onSubmit={submitHandler} id="pokemon-form">
+    <Form onSubmit={submitHandler}>
       <p>
         <label>
           好きなポケモンはなんですか？
-          <input type="text" name="name" required list="pokemon-list" />
+          <Input type="text" name="name" required list="pokemon-list" />
           <datalist id="pokemon-list">
             {pokemonList.map((poke) => (
               <option key={poke.id}>{poke.name}</option>
@@ -41,6 +44,6 @@ export const PokemonForm: FC = () => {
           <SubmitButton />
         </Suspense>
       </p>
-    </form>
+    </Form>
   );
 };

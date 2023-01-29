@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { useRecoilValue } from "recoil";
 import { field } from "../dataflow/utils/field";
-import { validationState } from "../dataflow/validation";
+import { validationState } from "../dataflow/pokemonForm";
 
 export const PokemonNameValidationStatus: FC = () => {
   const pokemonNameIsValid = useRecoilValue(
